@@ -48,10 +48,11 @@ if _G.SpeedBoost then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += (game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue)
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 end
+wait()
 end)
 KillerSurvival:AddSlider("MySlider",{
 Text = "Speed Boost",
-Min = 0, Max = 3,
+Min = 1, Max = 3,
 Default = 1, Compact = true,
 Rounding = 1,
 Callback = function(v)
@@ -82,12 +83,10 @@ KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function(v)
 _G.AutoGeneratorSolution = v
-spawn(function()
-pcall(function()
-while _G.AutoGeneratorSolution do
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoGeneratorSolution then
 GeneratorSolution()
-wait(_G.GeneratorSolutionDelay)
 end
-end)
+wait(_G.GeneratorSolutionDelay)
 end)
 end})
