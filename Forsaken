@@ -107,12 +107,12 @@ Text = "Survival ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v.Name == "Survivors" then
+if v.Parent.Name == "Survivors" then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
 workspace.Players.DescendantAdded:Connect(function(v)
-if v.Name == "Survivors" then
+if v.Parent.Name == "Survivors" then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
@@ -125,17 +125,53 @@ Text = "Killer ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v.Name == "Killers" then
-LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+if v.Parent.Name == "Killers" then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 workspace.Players.DescendantAdded:Connect(function(v)
-if v.Name == "Killers" then
-LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+if v.Parent.Name == "Killers" then
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
 else
 LibESP:Delete("Killers_ESP")
+end
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Medkit ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Medkit" then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Medkit_ESP")
+end
+end
+workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Medkit" then
+LibESP:AddESP(v, "Medkit", Color3.fromRGB(255, 0, 0), 14, "Medkit_ESP")
+end
+end)
+else
+LibESP:Delete("Medkit_ESP")
+end
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Killer ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Bloxy Cola" then
+LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
+end
+end
+workspace.Players.DescendantAdded:Connect(function(v)
+if v.Parent.Name == "BloxyCola" then
+LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
+end
+end)
+else
+LibESP:Delete("BloxyCola_ESP")
 end
 end})
 Visual:AddDivider()
@@ -143,11 +179,6 @@ Visual:AddToggle("MyToggle",{
 Text = "Text ESP",
 Callback = function(v)
 getgenv().TextESP = v
-end})
-Visual:AddToggle("MyToggle",{
-Text = "Distance ESP",
-Callback = function(v)
-getgenv().DistanceESP = v
 end})
 Visual:AddToggle("MyToggle",{
 Text = "Rainbow ESP",
