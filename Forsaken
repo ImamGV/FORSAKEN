@@ -95,7 +95,7 @@ end)
 else
 AutoGenerator:Disconnect()
 end
-end)
+end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Noclip Killer Wall",
