@@ -87,7 +87,7 @@ while _env.AutoGeneratorSolution do
 GeneratorSolution()
 wait(_env.GeneratorSolutionDelay or 1.5)
 end
-end})
+end)
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Noclip Killer Wall",
