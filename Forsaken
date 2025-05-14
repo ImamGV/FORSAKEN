@@ -61,6 +61,7 @@ _env.SpeedBoost = v
 while _env.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue or 1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+wait()
 end
 end})
 KillerSurvival:AddDivider()
