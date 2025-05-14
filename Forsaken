@@ -157,7 +157,7 @@ LibESP:Delete("Medkit_ESP")
 end
 end})
 Visual:AddToggle("MyToggle",{
-Text = "Killer ESP",
+Text = "Cola ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
@@ -165,8 +165,8 @@ if v.Name == "Bloxy Cola" then
 LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
 end
 end
-workspace.Players.DescendantAdded:Connect(function(v)
-if v.Parent.Name == "BloxyCola" then
+workspace.DescendantAdded:Connect(function(v)
+if v.Name == "BloxyCola" then
 LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
 end
 end)
