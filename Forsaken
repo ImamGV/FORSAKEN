@@ -11,7 +11,7 @@ Library.ShowCustomCursor = true
 Library.NotifySide = "Right"
 
 local Window = Library:CreateWindow({
-	Title = 'YOUHUB | Forsaken | Alpha v.0.0.1 ',
+	Title = 'Forsaken',
 	Center = true,
 	AutoShow = true,
 	Resizable = true,
