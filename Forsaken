@@ -67,8 +67,8 @@ end
 end})
 KillerSurvival:AddDivider()
 function GeneratorSolution()
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and (v.Main.Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Generator" and v then
 v.Remotes.RE:FireServer()
 end
 end
@@ -90,20 +90,7 @@ GeneratorSolution()
 wait(_env.GeneratorSolutionDelay or 1.5)
 end
 end})
-KillerSurvival:AddDivider()
-KillerSurvival:AddToggle("MyToggle",{
-Text = "Noclip Killer Wall",
-Callback = function(v)
-_env.NoclipKillerWall = v
-while _env.NoclipKillerWall do
-for _,v in ipairs(workspace.Map.Ingame.Map["Killer_Only Wall"]:GetDescendants()) do
-if v:IsA("Part") then
-v.CanCollide = false
-end
-end
-wait()
-end
-end})
+
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
@@ -217,7 +204,7 @@ Text = "Auto Claim Cola",
 Callback = function(v)
 _G.AutoClaimCola = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutiClaimCola then
+if _G.AutoClaimCola then
 ClaimBloxyCola()
 end
 end)
@@ -227,7 +214,7 @@ Text = "Auto Claim Medkit",
 Callback = function(v)
 _G.AutoClaimMedkit = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutiClaimMedkit then
+if _G.AutoClaimMedkit then
 ClaimMedkit()
 end
 end)
