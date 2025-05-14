@@ -81,10 +81,8 @@ Rounding = 1,
 Callback = function(v)
 _G.GeneratorSolutionDelay = v
 end})
-KillerSurvival:AddToggle("MyToggle",{
-Text = "Auto Generator Solution",
-Callback = function(v)
-_env.AutoGeneratorSolution = v
+KillerSurvival:AddButton("Auto Generator Solution",function()
+_env.AutoGeneratorSolution = true
 while _env.AutoGeneratorSolution do
 GeneratorSolution()
 wait(_env.GeneratorSolutionDelay or 1.5)
@@ -136,6 +134,24 @@ end
 end)
 else
 LibESP:Delete("Killers_ESP")
+end
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Generator ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v.Name == "Generator" then
+LibESP:AddESP(v, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end
+workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Generator" then
+LibESP:AddESP(v, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+end
+end)
+else
+LibESP:Delete("Generator_ESP")
 end
 end})
 Visual:AddToggle("MyToggle",{
