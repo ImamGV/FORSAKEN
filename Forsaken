@@ -24,15 +24,18 @@ local Window = Library:CreateWindow({
 local Tabs = {
 	Main = Window:AddTab('Main')
 }
+
+local _env = getgenv and getgenv() or {}
+
 local KillerSurvival = Tabs.Main:AddLeftGroupbox("Killer & Survival")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 end
 end)
@@ -40,7 +43,7 @@ end)
 KillerSurvival:AddToggle("MyToggle",{
 Text = "No Stun",
 Callback = function(v)
-_G.NoStun = v
+_env.NoStun = v
 end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddSlider("MySlider",{
@@ -49,14 +52,14 @@ Min = 1, Max = 3,
 Default = 1, Compact = true,
 Rounding = 1,
 Callback = function(v)
-_G.SpeedBoostValue = v
+_env.SpeedBoostValue = v
 end})
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Speed Boost",
 Callback = function(v)
-_G.SpeedBoost = v
-while _G.SpeedBoost do wait()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue or 1
+_env.SpeedBoost = v
+while _env.SpeedBoost do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue or 1
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 end
 end})
@@ -79,10 +82,65 @@ end})
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function(v)
-_G.AutoGeneratorSolution = v
-while _G.AutoGeneratorSolution do wait()
+_env.AutoGeneratorSolution = v
+while _env.AutoGeneratorSolution do
 GeneratorSolution()
-wait(_G.GeneratorSolutionDelay or 1.5)
+wait(_env.GeneratorSolutionDelay or 1.5)
 end
 end})
+KillerSurvival:AddDivider()
+KillerSurvival:AddToggle("MyToggle",{
+Text = "Noclip Killer Wall",
+Callback = function(v)
+_env.NoclipKillerWall = v
+while _env.NoclipKillerWall do
+workspace.Map.Ingame.Map["Killer_Only Wall"]:FindFirstChild("Part").CanCollide = false
+end
+end})
+local Visual = Tabs.Main:AddRightGroupbox("Visual")
+local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
+Visual:AddToggle("MyToggle",{
+Text = "Survival ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players.Survivors:GetChildren()) do
+LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+workspace.Players.Survivors.DescendantAdded:Connect(function(v)
+LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end)
+else
+LibESP:Delete("Survival_ESP")
+end
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Killer ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace.Players.Killers:GetChildren()) do
+LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+workspace.Players.Killers.DescendantAdded:Connect(function(v)
+LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end)
+else
+LibESP:Delete("Killers_ESP")
+end
+end})
+Visual:AddDivider()
+Visual:AddToggle("MyToggle",{
+Text = "Text ESP",
+Callback = function(v)
+getgenv().TextESP = v
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Distance ESP",
+Callback = function(v)
+getgenv().DistanceESP = v
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Rainbow ESP",
+Callback = function(v)
+getgenv().RainbowESP = v
+end})
