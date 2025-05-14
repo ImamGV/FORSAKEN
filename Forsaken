@@ -66,14 +66,11 @@ wait()
 end
 end})
 KillerSurvival:AddDivider()
-function AutoGeneratorSolution()
-while true do
+function GeneratorSolution()
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and (v.Main.Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
 v.Remotes.RE:FireServer()
 end
-end
-wait(_G.GeneratorSolutionDelay or 1.5)
 end
 end
 KillerSurvival:AddSlider("MySlider",{
@@ -88,9 +85,19 @@ KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function()
 if v then
-AutoGeneratorSolution()
+spawn(function()
+while true do
+GeneratorSolution()
+wait(_G.GeneratorSolutionDelay or 1.5)
+end
+end)
 AutoGenerator = workspace.Map.Ingame.Map.DescendantAdded:Connect(function()
-AutoGeneratorSolution()
+spawn(function()
+while true do
+GeneratorSolution()
+wait(_G.GeneratorSolutionDelay or 1.5)
+end
+end)
 end)
 else
 AutoGenerator:Disconnect()
@@ -102,7 +109,12 @@ Text = "Noclip Killer Wall",
 Callback = function(v)
 _env.NoclipKillerWall = v
 while _env.NoclipKillerWall do
-workspace.Map.Ingame.Map["Killer_Only Wall"]:FindFirstChild("Part").CanCollide = false
+for _,v in ipairs(workspace.Map.Ingame.Map["Killer_Only Wall"]:GetDescendants()) do
+if v:IsA("Part") then
+v.CanCollide = false
+end
+end
+wait()
 end
 end})
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
@@ -198,12 +210,10 @@ else
 LibESP:Delete("BloxyCola_ESP")
 end
 end})
-Visual:AddDivider()
-Visual:AddToggle("MyToggle",{
-Text = "Text ESP",
+local Interact = Tabs.Main:AddLeftGroupbox("Interact")
+Interact:AddToggle("MyToggle",{
+Text = "Auto Cola",
 Callback = function(v)
-getgenv().TextESP = v
-end})
 
 local MainTabbox = Tabs.Main:AddRightTabbox()
 local Lighting = MainTabbox:AddTab("Lighting")
