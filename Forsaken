@@ -85,9 +85,9 @@ KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function()
 _env.AutoGeneratorSolution = v
-while _G.AutoGeneratorSolution == true then
+while _env.AutoGeneratorSolution then
 GeneratorSolution()
-wait(_env.GeneratorSolutionDelay or 1.5)
+wait(_G.GeneratorSolutionDelay or 1.5)
 end
 end})
 KillerSurvival:AddDivider()
