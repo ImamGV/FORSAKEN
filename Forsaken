@@ -84,23 +84,10 @@ end})
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function()
-if v then
-spawn(function()
-while true do
+_env.AutoGeneratorSolution = v
+while _G.AutoGeneratorSolution == true then
 GeneratorSolution()
-wait(_G.GeneratorSolutionDelay or 1.5)
-end
-end)
-AutoGenerator = workspace.Map.Ingame.Map.DescendantAdded:Connect(function()
-spawn(function()
-while true do
-GeneratorSolution()
-wait(_G.GeneratorSolutionDelay or 1.5)
-end
-end)
-end)
-else
-AutoGenerator:Disconnect()
+wait(_env.GeneratorSolutionDelay or 1.5)
 end
 end})
 KillerSurvival:AddDivider()
@@ -212,16 +199,16 @@ end
 end})
 local Interact = Tabs.Main:AddLeftGroupbox("Interact")
 function ClaimBloxyCola()
-for _,v in ipairs(workspace.Map:GetDescendants()) do
-if v.Name == "ProximityPrompt" and v.Parent.Parent.Name == "Bloxy Cola" then
-fireproximityprompt(v)
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Bloxy Cola" then
+fireproximityprompt(v.ItemRoot.ProximityPrompt)
 end
 end
 end
 function ClaimMedkit()
-for _,v in ipairs(workspace.Map:GetDescendants()) do
-if v.Name == "ProximityPrompt" and v.Parent.Parent.Name == "Medkit" then
-fireproximityprompt(v)
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Medkit" then
+fireproximityprompt(v.ItemRoot.ProximityPrompt)
 end
 end
 end
