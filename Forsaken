@@ -211,10 +211,40 @@ LibESP:Delete("BloxyCola_ESP")
 end
 end})
 local Interact = Tabs.Main:AddLeftGroupbox("Interact")
+function ClaimBloxyCola()
+for _,v in ipairs(workspace.Map:GetDescendants()) do
+if v.Name == "ProximityPrompt" and v.Parent.Parent.Name == "Bloxy Cola" then
+fireproximityprompt(v)
+end
+end
+end
+function ClaimMedkit()
+for _,v in ipairs(workspace.Map:GetDescendants()) do
+if v.Name == "ProximityPrompt" and v.Parent.Parent.Name == "Medkit" then
+fireproximityprompt(v)
+end
+end
+end
 Interact:AddToggle("MyToggle",{
-Text = "Auto Cola",
+Text = "Auto Claim Cola",
 Callback = function(v)
-
+_G.AutoClaimCola = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutiClaimCola then
+ClaimBloxyCola()
+end
+end)
+end})
+Interact:AddToggle("MyToggle",{
+Text = "Auto Claim Medkit",
+Callback = function(v)
+_G.AutoClaimMedkit = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutiClaimMedkit then
+ClaimMedkit()
+end
+end)
+end})
 local MainTabbox = Tabs.Main:AddRightTabbox()
 local Lighting = MainTabbox:AddTab("Lighting")
 Lighting:AddSlider("MySlider",{
