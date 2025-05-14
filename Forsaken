@@ -79,15 +79,15 @@ Min = 1.5, Max = 3,
 Default = 1.5, Compact = true,
 Rounding = 1,
 Callback = function(v)
-_G.GeneratorSolutionDelay = v
+_env.GeneratorSolutionDelay = v
 end})
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function(v)
 _env.AutoGeneratorSolution = v
-while _env.AutoGeneratorSolution then
+while _env.AutoGeneratorSolution do
 GeneratorSolution()
-wait(_G.GeneratorSolutionDelay or 1.5)
+wait(_env.GeneratorSolutionDelay or 1.5)
 end
 end})
 KillerSurvival:AddDivider()
