@@ -1,5 +1,5 @@
 local Killer = game.Workspace.Players.Killers:GetChildren()[1]
-local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -48,18 +48,19 @@ end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddSlider("MySlider",{
 Text = "Speed Boost",
-Min = 1, Max = 3,
+Min = 0, Max = 3,
 Default = 1, Compact = true,
 Rounding = 1,
 Callback = function(v)
 _env.SpeedBoostValue = v
 end})
+_env.SpeedBoostValue = 1
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Speed Boost",
 Callback = function(v)
 _env.SpeedBoost = v
 while _env.SpeedBoost do
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue or 1
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 wait()
 end
@@ -105,11 +106,15 @@ Visual:AddToggle("MyToggle",{
 Text = "Survival ESP",
 Callback = function(v)
 if v then
-for _, v in ipairs(workspace.Players.Survivors:GetChildren()) do
-LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v.Name == "Survivors" then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
-workspace.Players.Survivors.DescendantAdded:Connect(function(v)
-LibESP:AddESP(v, v.Name, Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
+workspace.Players.DescendantAdded:Connect(function(v)
+if v.Name == "Survivors" then
+LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
+end
 end)
 else
 LibESP:Delete("Survival_ESP")
@@ -119,11 +124,15 @@ Visual:AddToggle("MyToggle",{
 Text = "Killer ESP",
 Callback = function(v)
 if v then
-for _, v in ipairs(workspace.Players.Killers:GetChildren()) do
-LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+for _, v in ipairs(workspace.Players:GetDescendants()) do
+if v.Name == "Killers" then
+LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
-workspace.Players.Killers.DescendantAdded:Connect(function(v)
-LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
+workspace.Players.DescendantAdded:Connect(function(v)
+if v.Name == "Killers" then
+LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+end
 end)
 else
 LibESP:Delete("Killers_ESP")
