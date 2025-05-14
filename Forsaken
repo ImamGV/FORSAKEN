@@ -201,14 +201,14 @@ local Interact = Tabs.Main:AddLeftGroupbox("Interact")
 function ClaimBloxyCola()
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v.Name == "Bloxy Cola" then
-fireproximityprompt(v.ItemRoot.ProximityPrompt)
+fireproximityprompt(v:FindFirstChildWhichIsA("BasePart"):FindFirstChildWhichIsA("ProximityPrompt"))
 end
 end
 end
 function ClaimMedkit()
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v.Name == "Medkit" then
-fireproximityprompt(v.ItemRoot.ProximityPrompt)
+fireproximityprompt(v:FindFirstChildWhichIsA("BasePart"):FindFirstChildWhichIsA("ProximityPrompt"))
 end
 end
 end
