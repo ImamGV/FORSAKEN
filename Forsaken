@@ -261,7 +261,7 @@ Camera:AddSlider("MySlider",{
 Text = "Field Of View",
 Min = 70,
 Default = 70,
-Max = 3,
+Max = 120,
 Rounding = 1,
 Compact = true,
 Callback = function(v)
@@ -273,6 +273,8 @@ Default = false,
 Callback = function(v)
 _G.FOV = v
 game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FOV then
 workspace.Camera.FieldOfView = _G.FovValue or 70
+end
 end)
 end})
