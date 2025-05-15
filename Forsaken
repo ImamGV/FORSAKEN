@@ -66,7 +66,7 @@ end
 end})
 KillerSurvival:AddDivider()
 function GeneratorSolution()
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and (v.Main.Position - _head.Position).Magnitude < 10 then
 v.Remotes.RE:FireServer()
 end
@@ -191,23 +191,7 @@ fireproximityprompt(v:FindFirstChildWhichIsA("BasePart"):FindFirstChildWhichIsA(
 end
 end
 end
-function ClaimItems()
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v:IsA("ProximityPrompt") and not v.Parent.Parent == "Generator" then
-fireproximityprompt(v)
-end
-end
-end
-Interact:AddToggle("MyToggle",{
-Text = "Auto Interact Items",
-Callback = function(v)
-_env.AutoClaimItems = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _env.AutoClaimItems then
-ClaimItems()
-end
-end)
-end})
+
 local MainTabbox = Tabs.Main:AddRightTabbox()
 local Lighting = MainTabbox:AddTab("Lighting")
 Lighting:AddSlider("MySlider",{
