@@ -1,4 +1,3 @@
-local Killer = game.Workspace.Players.Killers:GetChildren()[1]
 local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -26,7 +25,7 @@ local Tabs = {
 }
 
 local _env = getgenv and getgenv() or {}
-
+local _head = game.Players.LocalPlayer.Character.Head
 local KillerSurvival = Tabs.Main:AddLeftGroupbox("Killer & Survival")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
@@ -68,7 +67,7 @@ end})
 KillerSurvival:AddDivider()
 function GeneratorSolution()
 for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
-if v.Name == "Generator" and v then
+if v.Name == "Generator" and (v.Main.Position - _head.Position).Magnitude < 10 then
 v.Remotes.RE:FireServer()
 end
 end
@@ -192,30 +191,20 @@ fireproximityprompt(v:FindFirstChildWhichIsA("BasePart"):FindFirstChildWhichIsA(
 end
 end
 end
-function ClaimMedkit()
+function ClaimItems()
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "Medkit" then
-fireproximityprompt(v:FindFirstChildWhichIsA("BasePart"):FindFirstChildWhichIsA("ProximityPrompt"))
+if v:IsA("ProximityPrompt") and not v.Parent.Parent == "Generator" then
+fireproximityprompt(v)
 end
 end
 end
 Interact:AddToggle("MyToggle",{
-Text = "Auto Claim Cola",
+Text = "Auto Interact Items",
 Callback = function(v)
-_env.AutoClaimCola = v
+_env.AutoClaimItems = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _env.AutoClaimCola then
-ClaimBloxyCola()
-end
-end)
-end})
-Interact:AddToggle("MyToggle",{
-Text = "Auto Claim Medkit",
-Callback = function(v)
-_env.AutoClaimMedkit = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _env.AutoClaimMedkit then
-ClaimMedkit()
+if _env.AutoClaimItems then
+ClaimItems()
 end
 end)
 end})
