@@ -25,7 +25,8 @@ local Tabs = {
 }
 
 local _env = getgenv and getgenv() or {}
-local _head = game.Players.LocalPlayer.Character.Head
+local _hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+
 local KillerSurvival = Tabs.Main:AddLeftGroupbox("Killer & Survival")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
@@ -66,43 +67,30 @@ end
 end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
-Text = "Auto Generator Solution [Slow]",
+Text = "Auto Generator Solution",
 Callback = function(v)
 _env.AutoGeneratorSolutionS = v
 while _env.AutoGeneratorSolutionS do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
-if v.Name == "Remotes" then
-v.RE:FireServer()
+for _, v in ipairs(game.Workspace.Map.Ingame.Map:GetChildren()) do
+if v.Name == "Generator" then
+v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+task.wait(0.15)
 end
 end
-wait(5)
-end
-end})
-KillerSurvival:AddToggle("MyToggle",{
-Text = "Auto Generator Solution [Normal]",
-Callback = function(v)
-_env.AutoGeneratorSolutionN = v
-while _env.AutoGeneratorSolutionN do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
-if v.Name == "Remotes" then
-v.RE:FireServer()
-end
-end
-wait(2.5)
 end
 end})
+KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
-Text = "Auto Generator Solution [Fast]",
+Text = "Auto Eat Pizza",
 Callback = function(v)
-_env.AutoGeneratorSolutionF = v
-while _env.AutoGeneratorSolutionF do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
-if v.Name == "Remotes" then
-v.RE:FireServer()
+_G.AutoEatPizza = v
+game:GetService("RunService").RenderStepped:Connect(function()
+for _,v in ipairs(workspace:GetDescendants()) do
+if v:IsA("BasePart") and v.Name == "Pizza" then
+v.CFrame = _hrp.CFrame
 end
 end
-wait(1.25)
-end
+end)
 end})
 
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
@@ -132,16 +120,34 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v.Parent.Name == "Killers" then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 workspace.Players.DescendantAdded:Connect(function(v)
 if v.Parent.Name == "Killers" then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
 else
 LibESP:Delete("Killers_ESP")
+end
+end})
+Visual:AddToggle("MyToggle",{
+Text = "Other ESP",
+Callback = function(v)
+if v then
+for _, v in ipairs(workspace:GetDescendants()) do
+if v.Name == "HumanoidRootProjectile" or v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
+end
+end
+workspace.DescendantAdded:Connect(function(v)
+if v.Name == "HumanoidRootProjectile" or v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
+end
+end)
+else
+LibESP:Delete("Other_ESP")
 end
 end})
 Visual:AddToggle("MyToggle",{
@@ -150,12 +156,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Generator" then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+LibESP:AddESP(v.Main, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
 workspace.DescendantAdded:Connect(function(v)
 if v.Name == "Generator" then
-LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+LibESP:AddESP(v.Main, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end)
 else
@@ -181,23 +187,24 @@ LibESP:Delete("Medkit_ESP")
 end
 end})
 Visual:AddToggle("MyToggle",{
-Text = "Cola ESP",
+Text = "Bloxy Cola ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Bloxy Cola" then
-LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "BloxyCola_ESP")
 end
 end
 workspace.DescendantAdded:Connect(function(v)
 if v.Name == "BloxyCola" then
-LibESP:AddESP(v, "Cola", Color3.fromRGB(0, 255, 255), 14, "BloxyCola_ESP")
+LibESP:AddESP(v, "Bloxy Cola", Color3.fromRGB(255, 255, 100), 14, "BloxyCola_ESP")
 end
 end)
 else
 LibESP:Delete("BloxyCola_ESP")
 end
 end})
+
 local MainTabbox = Tabs.Main:AddRightTabbox()
 local Lighting = MainTabbox:AddTab("Lighting")
 Lighting:AddSlider("MySlider",{
@@ -268,7 +275,7 @@ Callback = function(v)
 _env.FOV = v
 game:GetService("RunService").RenderStepped:Connect(function()
 if _env.FOV then
-workspace.CurrentCamera.FieldOfView = _env.FovValue
+game.Players.LocalPlayer.Character.FOVMultipliers.FOVSetting.Value = _env.FovValue
 end
 end)
 end})
