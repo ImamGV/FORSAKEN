@@ -65,26 +65,43 @@ wait()
 end
 end})
 KillerSurvival:AddDivider()
-KillerSurvival:AddSlider("MySlider",{
-Text = "Generator Solution Delay",
-Min = 1, Max = 3,
-Default = 1.5, Compact = true,
-Rounding = 1,
-Callback = function(v)
-_env.GeneratorSolutionDelay = v
-end})
-_env.GeneratorSolutionDelay = 1.5
 KillerSurvival:AddToggle("MyToggle",{
-Text = "Auto Generator Solution",
+Text = "Auto Generator Solution [Slow]",
 Callback = function(v)
-_env.AutoGeneratorSolution = v
-while _env.AutoGeneratorSolution do
+_env.AutoGeneratorSolutionS = v
+while _env.AutoGeneratorSolutionS do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
 if v.Name == "Remotes" then
 v.RE:FireServer()
 end
 end
-wait(_env.GeneratorSolutionDelay)
+wait(5)
+end
+end})
+KillerSurvival:AddToggle("MyToggle",{
+Text = "Auto Generator Solution [Normal]",
+Callback = function(v)
+_env.AutoGeneratorSolutionN = v
+while _env.AutoGeneratorSolutionN do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Remotes" then
+v.RE:FireServer()
+end
+end
+wait(2.5)
+end
+end})
+KillerSurvival:AddToggle("MyToggle",{
+Text = "Auto Generator Solution [Fast]",
+Callback = function(v)
+_env.AutoGeneratorSolutionF = v
+while _env.AutoGeneratorSolutionF do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Remotes" then
+v.RE:FireServer()
+end
+end
+wait(1.25)
 end
 end})
 
