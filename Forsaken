@@ -69,12 +69,12 @@ KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function(v)
-_env.AutoGeneratorSolutionS = v
-while _env.AutoGeneratorSolutionS do
+_env.AutoGeneratorSolution = v
+while _env.AutoGeneratorSolution do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
 v:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer()
-task.wait(0.15)
+task.wait(1.5)
 end
 end
 end
@@ -83,8 +83,7 @@ KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Eat Pizza",
 Callback = function(v)
-_G.AutoEatPizza = v
-game:GetService("RunService").RenderStepped:Connect(function()
+if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v:IsA("BasePart") and v.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
@@ -92,7 +91,16 @@ v.CFrame = _hrp.CFrame
 end
 end
 end
+AutoEatPizza = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v:IsA("BasePart") and v.Name == "Pizza" then
+if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
+v.CFrame = _hrp.CFrame
+end
+end
 end)
+else
+AutoEatPizza:Disconnect()
+end
 end})
 
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
@@ -141,12 +149,12 @@ Text = "Other ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v.Name == "HumanoidRootProjectile" or v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end
 OtherESP = workspace.DescendantAdded:Connect(function(v)
-if v.Name == "HumanoidRootProjectile" or v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end)
@@ -161,12 +169,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v.Name == "Generator" then
-LibESP:AddESP(v.Main, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end
 GeneratorESP = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "Generator" then
-LibESP:AddESP(v.Main, "Generator", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 220, 0), 14, "Generator_ESP")
 end
 end)
 else
@@ -180,12 +188,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v.Name == "SubspaceTripmine" then
-LibESP:AddESP(v, "SubspaceTripmine", Color3.fromRGB(255, 0, 255), 14, "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 255), 14, "SubspaceTripmine_ESP")
 end
 end
 SubspaceTripmineESP = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "SubspaceTripmine" then
-LibESP:AddESP(v, "SubspaceTripmine", Color3.fromRGB(255, 0, 255), 14, "SubspaceTripmine_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 255), 14, "SubspaceTripmine_ESP")
 end
 end)
 else
