@@ -73,7 +73,7 @@ _env.AutoGeneratorSolutionS = v
 while _env.AutoGeneratorSolutionS do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
-v:WaitForChild("Remotes"):WaitForChild("RE"):FireServer()
+v:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer()
 task.wait(0.15)
 end
 end
@@ -87,7 +87,9 @@ _G.AutoEatPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v:IsA("BasePart") and v.Name == "Pizza" then
+if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
 v.CFrame = _hrp.CFrame
+end
 end
 end
 end)
