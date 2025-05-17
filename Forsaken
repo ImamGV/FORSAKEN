@@ -74,7 +74,7 @@ while _env.AutoGeneratorSolution do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
 v:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer()
-task.wait(1.5)
+task.wait(1)
 end
 end
 end
@@ -131,12 +131,12 @@ Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v.Parent.Name == "Killers" then
-LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v.Parent.Name == "Killers" then
-LibESP:AddESP(v, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
 else
