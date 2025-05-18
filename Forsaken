@@ -75,8 +75,8 @@ _env.AutoGeneratorSolution = v
 while _env.AutoGeneratorSolution do
 for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" then
-v:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer()
-task.wait(1)
+v.Remotes.RE:FireServer()
+task.wait(1.3)
 end
 end
 end
