@@ -26,7 +26,9 @@ local Tabs = {
 
 local _env = getgenv and getgenv() or {}
 local _hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-
+if game.Players.LocalPlayer.Name == "rechedmcvnGV" or game.Players.LocalPlayer.Name == "rechedmcvn" then
+Library:Notify("Hello, my brother")
+end
 local KillerSurvival = Tabs.Main:AddLeftGroupbox("Killer & Survival")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
