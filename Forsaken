@@ -72,14 +72,16 @@ KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Callback = function(v)
 _env.AutoGeneratorSolution = v
+task.spawn(function()
 while _env.AutoGeneratorSolution do
-for _, v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
+for _, v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
 if v.Name == "Generator" then
 v.Remotes.RE:FireServer()
+end
+end
 task.wait(1.3)
 end
-end
-end
+end)
 end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
