@@ -330,35 +330,20 @@ end)
 end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("MyToggle",{
-Text = "Notify Killers",
+Text = "Notify Items",
 Default = false,
 Callback = function(v)
 if v then
-NotifyKillers = workspace.Players.Killers.DescendantAdded:Connect(function(v)
-if v["c00lkidd"] and v.Name == "c00lkidd" then
-Library:Notify("Forsaken | Warning\nThe Killers is 'c00lkidd'")
-elseif v["JohnDoe"] and v.Name == "JohnDoe" then
-Library:Notify("Forsaken | Warning\nThe Killers is 'John Doe'")
-elseif v["1x1x1x1"] and v.Name == "1x1x1x1" then
-Library:Notify("Forsaken | Warning\nThe Killers is '1x1x1x1'!")
+NotifyKillers = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "BloxyCola" then
+Library:Notify("Forsaken | Warning\nItems 'Bloxy Cola' has spawn!")
+elseif v.Name == "Medkit" then
+Library:Notify("Forsaken | Warning\nItems 'Medkit' has spawn!")
+else
 end
 end)
 else
 NotifyKillers:Disconnect()
-end
-end})
-Notify:AddToggle("MyToggle",{
-Text = "Notify Spike John Doe",
-Default = false,
-Callback = function(v)
-if v then
-NotifySpikeJohnDoe = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "Spike" then
-Library:Notify("Forsaken | Warning\nBlock 'Spike (John Doe)' has spawn!")
-end
-end)
-else
-NotifySpikeJohnDoe:Disconnect()
 end
 end})
 Notify:AddToggle("MyToggle",{
@@ -400,7 +385,7 @@ if v.Name == "JohnDoeTrail" then
 v.Trail.CanTouch = false
 end
 end
-AntiJohnDoeTrail = workspace.Players.Killer["JohnDoe"].DescendantAdded:Connect(function(v)
+AntiJohnDoeTrail = workspace.Players.Killers["JohnDoe"].DescendantAdded:Connect(function(v)
 if v.Name == "JohnDoeTrail" then
 v.Trail.CanTouch = false
 end
@@ -413,41 +398,4 @@ v.Trail.CanTouch = true
 end
 end
 end
-end})
-local Interact = Tabs.Main:AddRightGroupbox("Interact")
-function InteractBloxyCola()
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "BloxyCola" and (v:FindFirstChildWhichIsA("BasePart").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
-fireproximityprompt(v:FindFirstChildWhichIsA("BasePart").ProximityPrompt)
-end
-end
-end
-function InteractMedkit()
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "Medkit" and (v:FindFirstChildWhichIsA("BasePart").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
-fireproximityprompt(v:FindFirstChildWhichIsA("BasePart").ProximityPrompt)
-end
-end
-end
-Interact:AddToggle("MyToggle",{
-Text = "Auto Claim Bloxy Cola",
-Default = false,
-Callback = function(v)
-_G.AutoClaimBloxyCola = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoClaimBloxyCola then
-InteractBloxyCola()
-end
-end)
-end})
-Interact:AddToggle("MyToggle",{
-Text = "Auto Claim Medkit",
-Default = false,
-Callback = function(v)
-_G.AutoClaimMedkit = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.AutoClaimMedkit then
-InteractMedkit()
-end
-end)
 end})
