@@ -70,7 +70,6 @@ end})
 KillerSurvival:AddDivider()
 function AutoPrizeGenerator(value)
 local runscript = value
-local debounce = {}
 while runscript do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
 if v.Name == "Generator" and v then
@@ -330,23 +329,6 @@ end)
 end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("MyToggle",{
-Text = "Notify Items",
-Default = false,
-Callback = function(v)
-if v then
-NotifyKillers = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "BloxyCola" then
-Library:Notify("Forsaken | Warning\nItems 'Bloxy Cola' has spawn!")
-elseif v.Name == "Medkit" then
-Library:Notify("Forsaken | Warning\nItems 'Medkit' has spawn!")
-else
-end
-end)
-else
-NotifyKillers:Disconnect()
-end
-end})
-Notify:AddToggle("MyToggle",{
 Text = "Notify Subspace Tripmine",
 Default = false,
 Callback = function(v)
@@ -380,12 +362,12 @@ Text = "Anti-John Doe Trail",
 Default = false,
 Callback = function(v)
 if v then
-for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild("JohnDoe"):GetDescendants()) do
+for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild('JohnDoe'):GetDescendants()) do
 if v.Name == "JohnDoeTrail" then
 v.Trail.CanTouch = false
 end
 end
-AntiJohnDoeTrail = workspace.Players.Killers["JohnDoe"].DescendantAdded:Connect(function(v)
+AntiJohnDoeTrail = workspace.Players.Killers.DescendantAdded:Connect(function(v)
 if v.Name == "JohnDoeTrail" then
 v.Trail.CanTouch = false
 end
