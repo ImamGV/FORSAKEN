@@ -64,19 +64,20 @@ _env.SpeedBoost = v
 while _env.SpeedBoost do
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _env.SpeedBoostValue
 game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
-wait()
+task.wait()
 end
 end})
 KillerSurvival:AddDivider()
 function PrizeGenerator()
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" then
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Generator" and v then
 v.Remotes.RE:FireServer()
 end
 end
 end
 KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
+Default = false,
 Callback = function(v)
 _env.AutoGeneratorSolution = v
 while _env.AutoGeneratorSolution do
@@ -107,16 +108,6 @@ else
 AutoEatPizza:Disconnect()
 end
 end})
-KillerSurvival:AddButton("Unlock Skin Character",function()
-game.Players.LocalPlayer.PlayerData.Equipped.Skins:Clone().Parent = game.Players.LocalPlayer.PlayerData.Purchased.Killers
-for i, v in pairs(game.Players.LocalPlayer.PlayerData.Equipped.Skins:Clone():GetChildren()) do
-v.Parent = game.Players.LocalPlayer.PlayerData.Purchased.Killers
-end
-game.Players.LocalPlayer.PlayerData.Equipped.Skins:Clone().Parent = game.Players.LocalPlayer.PlayerData.Purchased.Survivors
-for i, v in pairs(game.Players.LocalPlayer.PlayerData.Equipped.Skins:Clone():GetChildren()) do
-v.Parent = game.Players.LocalPlayer.PlayerData.Purchased.Survivors
-end
-end)
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
@@ -330,13 +321,45 @@ end)
 end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("MyToggle",{
+Text = "Notify Killers",
+Default = false,
+Callback = function(v)
+if v then
+NotifyKillers = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+if v["c00lkidd"] and v.Name == "c00lkidd" then
+Library:Notify("Forsaken | Warning\nThe Killers is 'c00lkidd'")
+elseif v["JohnDoe"] and v.Name == "JohnDoe" then
+Library:Notify("Forsaken | Warning\nThe Killers is 'John Doe'")
+elseif v["1x1x1x1"] and v.Name == "1x1x1x1" then
+Library:Notify("Forsaken | Warning\nThe Killers is '1x1x1x1'!")
+end
+end)
+else
+NotifyKillers:Disconnect()
+end
+end})
+Notify:AddToggle("MyToggle",{
+Text = "Notify Spike John Doe",
+Default = false,
+Callback = function(v)
+if v then
+NotifySpikeJohnDoe = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
+if v.Name == "Spike" then
+Library:Notify("Forsaken | Warning\nBlock 'Spike (John Doe)' has spawn!")
+end
+end)
+else
+NotifySpikeJohnDoe:Disconnect()
+end
+end})
+Notify:AddToggle("MyToggle",{
 Text = "Notify Subspace Tripmine",
 Default = false,
 Callback = function(v)
 if v then
 NotifySubspaceTripmine = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v.Name == "SubspaceTripmine" then
-Library:Notify("Forsaken | Warning\n'Subspace Tripmine' has spawn!")
+Library:Notify("Forsaken | Warning\nBlock 'Subspace Tripmine' has spawn!")
 end
 end)
 else
@@ -344,16 +367,78 @@ NotifySubspaceTripmine:Disconnect()
 end
 end})
 Notify:AddToggle("MyToggle",{
-Text = "Notify Entity Killer",
+Text = "Notify Entity Killers",
 Default = false,
 Callback = function(v)
 if v then
-NotifySubspaceTripmine = workspace.DescendantAdded:Connect(function(v)
+NotifyEntityKillers = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
-Library:Notify("Forsaken | Warning\n'" .. v.Name .. "' has spawn!")
+Library:Notify("Forsaken | Warning\nEntity '" .. v.Name .. "' has spawn!")
 end
 end)
 else
-NotifySubspaceTripmine:Disconnect()
+NotifyEntityKillers:Disconnect()
 end
+end})
+local Anti = Tabs.Main:AddLeftGroupbox("Anti")
+Anti:AddToggle("MyToggle",{
+Text = "Anti-John Doe Trail",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild("JohnDoe"):GetDescendants()) do
+if v.Name == "JohnDoeTrail" then
+v.Trail.CanTouch = false
+end
+end
+AntiJohnDoeTrail = workspace.Players.Killer["JohnDoe"].DescendantAdded:Connect(function(v)
+if v.Name == "JohnDoeTrail" then
+v.Trail.CanTouch = false
+end
+end)
+else
+AntiJohnDoeTrail:Disconnect()
+for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild("JohnDoe"):GetDescendants()) do
+if v.Name == "JohnDoeTrail" then
+v.Trail.CanTouch = true
+end
+end
+end
+end})
+local Interact = Tabs.Main:AddRightGroupbox("Interact")
+function InteractBloxyCola()
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "BloxyCola" and (v:FindFirstChildWhichIsA("BasePart").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
+fireproximityprompt(v:FindFirstChildWhichIsA("BasePart").ProximityPrompt)
+end
+end
+end
+function InteractMedkit()
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Medkit" and (v:FindFirstChildWhichIsA("BasePart").Position - game.Players.LocalPlayer.Character.Head.Position).Magnitude < 10 then
+fireproximityprompt(v:FindFirstChildWhichIsA("BasePart").ProximityPrompt)
+end
+end
+end
+Interact:AddToggle("MyToggle",{
+Text = "Auto Claim Bloxy Cola",
+Default = false,
+Callback = function(v)
+_G.AutoClaimBloxyCola = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoClaimBloxyCola then
+InteractBloxyCola()
+end
+end)
+end})
+Interact:AddToggle("MyToggle",{
+Text = "Auto Claim Medkit",
+Default = false,
+Callback = function(v)
+_G.AutoClaimMedkit = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoClaimMedkit then
+InteractMedkit()
+end
+end)
 end})
