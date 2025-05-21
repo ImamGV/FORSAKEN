@@ -91,7 +91,15 @@ KillerSurvival:AddToggle("MyToggle",{
 Text = "Auto Generator Solution",
 Default = false,
 Callback = function(v)
-AutoPrizeGenerator(v)
+if v then
+AutoPrizeGenerator(true)
+AutoGenerator = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
+AutoPrizeGenerator(true)
+end)
+else
+AutoGenerator:Disconnect()
+AutoPrizeGenerator(false)
+end
 end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("MyToggle",{
@@ -99,16 +107,16 @@ Text = "Auto Eat Pizza",
 Callback = function(v)
 if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v:IsA("BasePart") and v.Name == "Pizza" then
+if v.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.CFrame = _hrp.CFrame
+v.Main.CFrame = _hrp.CFrame
 end
 end
 end
 AutoEatPizza = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("BasePart") and v.Name == "Pizza" then
+if v.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.CFrame = _hrp.CFrame
+v.Main.CFrame = _hrp.CFrame
 end
 end
 end)
@@ -327,6 +335,43 @@ workspace.Camera.FieldOfView = _env.FovValue
 end
 end)
 end})
+local Aimbot = MainTabbox:AddTab("Aimbot")
+function AimShootChance(value)
+local aimshootchance = value
+if value then
+local chanceaimbotsounds = {
+    "rbxassetid://201858045",
+    "rbxassetid://139012439429121"
+}
+aimshootchance = game.Players.LocalPlayer.Character.HumanoidRootPart.ChildAdded:Connect(function(child)
+if not aimshootchance then return end
+for _, v in pairs(chanceaimbotsounds) do
+if child.Name == v then
+local targetkiller = game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model")
+if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
+if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
+local number = 1
+while number <= 100 do
+task.wait(0.01)
+1 = num + 1
+workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
+end
+end
+end
+end
+end
+end
+end)
+else
+aimshootchance:Disconnect()
+end
+end
+Aimbot:AddToggle("MyToggle",{
+Text = "Chance Shoot Aimbot",
+Default = false,
+Callback = function(v)
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("MyToggle",{
 Text = "Notify Subspace Tripmine",
@@ -362,22 +407,17 @@ Text = "Anti-John Doe Trail",
 Default = false,
 Callback = function(v)
 if v then
-for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild('JohnDoe'):GetDescendants()) do
+for _,v in ipairs(workspace.Players:GetDescendants()) do
 if v.Name == "JohnDoeTrail" then
-v.Trail.CanTouch = false
+v:Destroy()
 end
 end
-AntiJohnDoeTrail = workspace.Players.Killers.DescendantAdded:Connect(function(v)
+AntiJohnDoeTrail = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "JohnDoeTrail" then
-v.Trail.CanTouch = false
+v:Destroy()
 end
 end)
 else
 AntiJohnDoeTrail:Disconnect()
-for _,v in ipairs(workspace.Players:FindFirstChild('Killers'):FindFirstChild("JohnDoe"):GetDescendants()) do
-if v.Name == "JohnDoeTrail" then
-v.Trail.CanTouch = true
-end
-end
 end
 end})
