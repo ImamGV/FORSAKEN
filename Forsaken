@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -26,9 +33,6 @@ local Tabs = {
 
 local _env = getgenv and getgenv() or {}
 local _hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-if game.Players.LocalPlayer.Name == "rechedmcvnGV" or game.Players.LocalPlayer.Name == "rechedmcvn" then
-Library:Notify("Hello, my brother")
-end
 local KillerSurvival = Tabs.Main:AddLeftGroupbox("Killer & Survival")
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _env.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
@@ -345,7 +349,7 @@ local chanceaimbotsounds = {
 }
 aimshootchance = game.Players.LocalPlayer.Character.HumanoidRootPart.ChildAdded:Connect(function(child)
 if not aimshootchance then return end
-for _, v in pairs(chanceaimbotsounds) do
+for _, v in ipairs(chanceaimbotsounds) do
 if child.Name == v then
 local targetkiller = game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model")
 if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
@@ -354,10 +358,9 @@ local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPl
 local number = 1
 while number <= 100 do
 task.wait(0.01)
-1 = num + 1
+number = number + 1
 workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
-end
 end
 end
 end
@@ -368,10 +371,85 @@ else
 aimshootchance:Disconnect()
 end
 end
+function AimSlashShedletsky(value)
+local aimslashsword = value
+if value then
+local shedaimbotsounds = {
+    "rbxassetid://12222225",
+    "rbxassetid://83851356262523"
+}
+aimslash = game.Players.LocalPlayer.Character.Sword.ChildAdded:Connect(function(child)
+if not aimslashsword then return end
+for _, v in ipairs(shedaimbotsounds) do
+if child.Name == v then
+local targetkiller = game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model")
+if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
+if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
+local number = 1
+while number <= 100 do
+task.wait(0.01)
+number = number + 1
+workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
+end
+end
+end
+end
+end
+end)
+else
+aimslash:Disconnect()
+end
+end
+function AimAttackGuest(value)
+local aimattackguest = value
+if value then
+local guestaimbotsounds = {
+    "rbxassetid://609342351"
+}
+aimguest = game.Players.LocalPlayer.Character.HumanoidRootPart.ChildAdded:Connect(function(child)
+if not aimattackguest then return end
+for _, v in ipairs(guestaimbotsounds) do
+if child.Name == v then
+local targetkiller = game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model")
+if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
+if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
+local number = 1
+while number <= 100 do
+task.wait(0.01)
+number = number + 1
+workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
+end
+end
+end
+end
+end
+end)
+else
+aimguest:Disconnect()
+end
+end
 Aimbot:AddToggle("MyToggle",{
 Text = "Chance Shoot Aimbot",
 Default = false,
 Callback = function(v)
+AimShootChance(v)
+end})
+Aimbot:AddToggle("MyToggle",{
+Text = "Shedletsky Slash Aimbot",
+Default = false,
+Callback = function(v)
+AimSlashShedletsky(v)
+end})
+Aimbot:AddToggle("MyToggle",{
+Text = "Guest Attack Aimbot",
+Default = false,
+Callback = function(v)
+AimAttackGuest(v)
+end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("MyToggle",{
 Text = "Notify Subspace Tripmine",
