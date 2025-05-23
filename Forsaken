@@ -1,11 +1,4 @@
-
-
-
-
-
-
-
-local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+local repo = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
@@ -46,13 +39,13 @@ game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
 end
 end)
 end)
-KillerSurvival:AddToggle("MyToggle",{
+KillerSurvival:AddToggle("NS",{
 Text = "No Stun",
 Callback = function(v)
 _env.NoStun = v
 end})
 KillerSurvival:AddDivider()
-KillerSurvival:AddSlider("MySlider",{
+KillerSurvival:AddSlider("SB",{
 Text = "Speed Boost",
 Min = 0, Max = 3,
 Default = 1, Compact = true,
@@ -61,7 +54,7 @@ Callback = function(v)
 _env.SpeedBoostValue = v
 end})
 _env.SpeedBoostValue = 1
-KillerSurvival:AddToggle("MyToggle",{
+KillerSurvival:AddToggle("SB",{
 Text = "Speed Boost",
 Callback = function(v)
 _env.SpeedBoost = v
@@ -80,10 +73,10 @@ if v.Name == "Generator" and v then
 v.Remotes.RE:FireServer()
 end
 end
-wait(_env.GeneratorSolutionDelay or 1.5)
+task.wait(_env.GeneratorSolutionDelay or 1.5)
 end
 end
-KillerSurvival:AddSlider("MySlider",{
+KillerSurvival:AddSlider("GSD",{
 Text = "Generator Solution Delay",
 Min = 1.25, Max = 5,
 Default = 1.5, Compact = true,
@@ -91,7 +84,7 @@ Rounding = 1,
 Callback = function(v)
 _env.GeneratorSolutionDelay = v
 end})
-KillerSurvival:AddToggle("MyToggle",{
+KillerSurvival:AddToggle("AGS",{
 Text = "Auto Generator Solution",
 Default = false,
 Callback = function(v)
@@ -106,7 +99,7 @@ AutoPrizeGenerator(false)
 end
 end})
 KillerSurvival:AddDivider()
-KillerSurvival:AddToggle("MyToggle",{
+KillerSurvival:AddToggle("AEP",{
 Text = "Auto Eat Pizza",
 Callback = function(v)
 if v then
@@ -131,7 +124,7 @@ end})
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("SE",{
 Text = "Survival ESP",
 Callback = function(v)
 if v then
@@ -150,7 +143,7 @@ SurvivalESP:Disconnect()
 LibESP:Delete("Survival_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("KE",{
 Text = "Killer ESP",
 Callback = function(v)
 if v then
@@ -169,18 +162,22 @@ KillersESP:Disconnect()
 LibESP:Delete("Killers_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("EKE",{
 Text = "Entity Killers ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
 if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
+elseif v.Name == "1x1x1x1Zombie" then
+LibESP:AddESP(v, "1x1x1x1 (Zombie)", Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end
 OtherESP = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
+elseif v.Name == "1x1x1x1Zombie" then
+LibESP:AddESP(v, "1x1x1x1 (Zombie)", Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end)
 else
@@ -188,7 +185,7 @@ OtherESP:Disconnect()
 LibESP:Delete("Other_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("GE",{
 Text = "Generator ESP",
 Callback = function(v)
 if v then
@@ -207,7 +204,7 @@ GeneratorESP:Disconnect()
 LibESP:Delete("Generator_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("ST",{
 Text = "Subspace Tripmine ESP",
 Callback = function(v)
 if v then
@@ -226,7 +223,7 @@ SubspaceTripmineESP:Disconnect()
 LibESP:Delete("SubspaceTripmine_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("ME",{
 Text = "Medkit ESP",
 Callback = function(v)
 if v then
@@ -245,7 +242,7 @@ Medkit:Disconnect()
 LibESP:Delete("Medkit_ESP")
 end
 end})
-Visual:AddToggle("MyToggle",{
+Visual:AddToggle("BCE",{
 Text = "Bloxy Cola ESP",
 Callback = function(v)
 if v then
@@ -267,7 +264,7 @@ end})
 
 local MainTabbox = Tabs.Main:AddRightTabbox()
 local Lighting = MainTabbox:AddTab("Lighting")
-Lighting:AddSlider("MySlider",{
+Lighting:AddSlider("B",{
 Text = "Brightness",
 Min = 0,
 Default = 0,
@@ -277,20 +274,20 @@ Compact = true,
 Callback = function(v)
 _env.Brightness = v
 end})
-Lighting:AddToggle("MyToggle",{
+Lighting:AddToggle("NShadow",{
 Text = "No Shadows",
 Default = false,
 Callback = function(v)
 _env.GlobalShadows = v
 end})
-Lighting:AddToggle("MyToggle",{
+Lighting:AddToggle("NFog",{
 Text = "No Fog",
 Default = false,
 Callback = function(v)
 _env.NoFog = v
 end})
 Lighting:AddDivider()
-Lighting:AddToggle("MyToggle",{
+Lighting:AddToggle("EnbledFB",{
 Text = "Enabled",
 Default = false,
 Callback = function(v)
@@ -317,7 +314,7 @@ end
 end)
 end})
 local Camera = MainTabbox:AddTab("Camera")
-Camera:AddSlider("MySlider",{
+Camera:AddSlider("FOV",{
 Text = "Field Of View",
 Min = 70,
 Default = 70,
@@ -328,7 +325,7 @@ Callback = function(v)
 _env.FovValue = v
 end})
 _G.FovValue = 70
-Camera:AddToggle("MyToggle",{
+Camera:AddToggle("EFOV",{
 Text = "Enabled",
 Default = false,
 Callback = function(v)
@@ -359,7 +356,6 @@ local number = 1
 while number <= 100 do
 task.wait(0.01)
 number = number + 1
-workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
 end
@@ -390,7 +386,6 @@ local number = 1
 while number <= 100 do
 task.wait(0.01)
 number = number + 1
-workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
 end
@@ -420,7 +415,6 @@ local number = 1
 while number <= 100 do
 task.wait(0.01)
 number = number + 1
-workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, targetkiller.HumanoidRootPart.Position)
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
 end
@@ -432,26 +426,26 @@ else
 aimguest:Disconnect()
 end
 end
-Aimbot:AddToggle("MyToggle",{
+Aimbot:AddToggle("CSA",{
 Text = "Chance Shoot Aimbot",
 Default = false,
 Callback = function(v)
 AimShootChance(v)
 end})
-Aimbot:AddToggle("MyToggle",{
+Aimbot:AddToggle("SSA",{
 Text = "Shedletsky Slash Aimbot",
 Default = false,
 Callback = function(v)
 AimSlashShedletsky(v)
 end})
-Aimbot:AddToggle("MyToggle",{
+Aimbot:AddToggle("GAA",{
 Text = "Guest Attack Aimbot",
 Default = false,
 Callback = function(v)
 AimAttackGuest(v)
 end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
-Notify:AddToggle("MyToggle",{
+Notify:AddToggle("NST",{
 Text = "Notify Subspace Tripmine",
 Default = false,
 Callback = function(v)
@@ -465,7 +459,7 @@ else
 NotifySubspaceTripmine:Disconnect()
 end
 end})
-Notify:AddToggle("MyToggle",{
+Notify:AddToggle("NEK",{
 Text = "Notify Entity Killers",
 Default = false,
 Callback = function(v)
@@ -473,6 +467,8 @@ if v then
 NotifyEntityKillers = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 Library:Notify("Forsaken | Warning\nEntity '" .. v.Name .. "' has spawn!")
+elseif v.Name == "1x1x1x1Zombie" then
+Library:Notify("Forsaken | Warning\nEntity '1x1x1x1 (Zombie)' has spawn!")
 end
 end)
 else
@@ -480,7 +476,7 @@ NotifyEntityKillers:Disconnect()
 end
 end})
 local Anti = Tabs.Main:AddLeftGroupbox("Anti")
-Anti:AddToggle("MyToggle",{
+Anti:AddToggle("AJDT",{
 Text = "Anti-John Doe Trail",
 Default = false,
 Callback = function(v)
