@@ -86,17 +86,8 @@ _env.GeneratorSolutionDelay = v
 end})
 KillerSurvival:AddToggle("AGS",{
 Text = "Auto Generator Solution",
-Default = false,
 Callback = function(v)
-if v then
-AutoPrizeGenerator(true)
-AutoGenerator = workspace.Map.Ingame.Map.DescendantAdded:Connect(function(v)
-AutoPrizeGenerator(true)
-end)
-else
-AutoGenerator:Disconnect()
-AutoPrizeGenerator(false)
-end
+AutoPrizeGenerator(v)
 end})
 KillerSurvival:AddDivider()
 KillerSurvival:AddToggle("AEP",{
@@ -104,14 +95,14 @@ Text = "Auto Eat Pizza",
 Callback = function(v)
 if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v.Name == "Pizza" then
+if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
 v.Main.CFrame = _hrp.CFrame
 end
 end
 end
 AutoEatPizza = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v.Name == "Pizza" then
+if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
 v.Main.CFrame = _hrp.CFrame
 end
@@ -129,12 +120,12 @@ Text = "Survival ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+if v:IsA("Model") and v.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
 SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
-if v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+if v:IsA("Model") and v.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
@@ -148,12 +139,12 @@ Text = "Killer ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+if v:IsA("Model") and v.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
-if v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
+if v:IsA("Model") and v.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
@@ -167,16 +158,16 @@ Text = "Entity Killers ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace:GetDescendants()) do
-if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+if v:IsA("Model") and v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
-elseif v.Name == "1x1x1x1Zombie" then
+elseif v:IsA("Model") and v.Name == "1x1x1x1Zombie" then
 LibESP:AddESP(v, "1x1x1x1 (Zombie)", Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end
 OtherESP = workspace.DescendantAdded:Connect(function(v)
-if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+if v:IsA("Model") and v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 LibESP:AddESP(v, v.Name, Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
-elseif v.Name == "1x1x1x1Zombie" then
+elseif v:IsA("Model") and v.Name == "1x1x1x1Zombie" then
 LibESP:AddESP(v, "1x1x1x1 (Zombie)", Color3.fromRGB(255, 10, 10), 14, "Other_ESP")
 end
 end)
@@ -316,10 +307,8 @@ end})
 local Camera = MainTabbox:AddTab("Camera")
 Camera:AddSlider("FOV",{
 Text = "Field Of View",
-Min = 70,
-Default = 70,
-Max = 120,
-Rounding = 1,
+Min = 70,Default = 70,
+Max = 120,Rounding = 1,
 Compact = true,
 Callback = function(v)
 _env.FovValue = v
@@ -327,7 +316,6 @@ end})
 _G.FovValue = 70
 Camera:AddToggle("EFOV",{
 Text = "Enabled",
-Default = false,
 Callback = function(v)
 _env.FOV = v
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -428,26 +416,22 @@ end
 end
 Aimbot:AddToggle("CSA",{
 Text = "Chance Shoot Aimbot",
-Default = false,
 Callback = function(v)
 AimShootChance(v)
 end})
 Aimbot:AddToggle("SSA",{
 Text = "Shedletsky Slash Aimbot",
-Default = false,
 Callback = function(v)
 AimSlashShedletsky(v)
 end})
 Aimbot:AddToggle("GAA",{
 Text = "Guest Attack Aimbot",
-Default = false,
 Callback = function(v)
 AimAttackGuest(v)
 end})
 local Notify = Tabs.Main:AddLeftGroupbox("Notify")
 Notify:AddToggle("NST",{
 Text = "Notify Subspace Tripmine",
-Default = false,
 Callback = function(v)
 if v then
 NotifySubspaceTripmine = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
@@ -461,13 +445,12 @@ end
 end})
 Notify:AddToggle("NEK",{
 Text = "Notify Entity Killers",
-Default = false,
 Callback = function(v)
 if v then
 NotifyEntityKillers = workspace.DescendantAdded:Connect(function(v)
-if v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
+if v:IsA("Model") and v.Name == "PizzaDeliveryRig" or v.Name == "Bunny" or v.Name == "Mafiaso1" or v.Name == "Mafiaso2" or v.Name == "Mafiaso3" then
 Library:Notify("Forsaken | Warning\nEntity '" .. v.Name .. "' has spawn!")
-elseif v.Name == "1x1x1x1Zombie" then
+elseif v:IsA("Model") and v.Name == "1x1x1x1Zombie" then
 Library:Notify("Forsaken | Warning\nEntity '1x1x1x1 (Zombie)' has spawn!")
 end
 end)
