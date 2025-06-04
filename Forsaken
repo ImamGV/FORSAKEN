@@ -64,6 +64,26 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 task.wait()
 end
 end})
+local function staminadrainono(state)
+        stam = state
+        local stamscript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+        
+        local connection
+        connection = game:GetService("RunService").Heartbeat:Connect(function()
+            if not stam then
+                connection:Disconnect()
+                stamscript.StaminaLossDisabled = nil
+                return
+            end
+            stamscript.StaminaLossDisabled = function() 
+            end
+        end)
+    end
+KillerSurvival:AddToggle("ISta",{
+Text = "Inf Stamina",
+Callback = function(v)
+staminadrainono(v)
+end})
 KillerSurvival:AddDivider()
 function AutoPrizeGenerator(value)
 local runscript = value
@@ -120,12 +140,12 @@ Text = "Survival ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end
 SurvivalESP = workspace.Players.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Survivors" and not v:FindFirstChild("Survival_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(0, 255, 0), 14, "Survival_ESP")
 end
 end)
@@ -139,12 +159,12 @@ Text = "Killer ESP",
 Callback = function(v)
 if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
-if v:IsA("Model") and v.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
-if v:IsA("Model") and v.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
+if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
