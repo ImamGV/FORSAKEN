@@ -87,14 +87,16 @@ end})
 KillerSurvival:AddDivider()
 function AutoPrizeGenerator(value)
 local runscript = value
+task.spawn(function()
 while runscript do
-for _,v in ipairs(workspace.Map.Ingame.Map:GetChildren()) do
-if v.Name == "Generator" and v then
-v.Remotes.RE:FireServer()
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Remotes" and v.Parent.Name == "Generator" then
+v.RE:FireServer()
 end
 end
 task.wait(_env.GeneratorSolutionDelay or 1.5)
 end
+end)
 end
 KillerSurvival:AddSlider("GSD",{
 Text = "Generator Solution Delay",
@@ -117,14 +119,14 @@ if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.Main.CFrame = _hrp.CFrame
+v.CFrame = _hrp.CFrame
 end
 end
 end
 AutoEatPizza = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
 if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.Main.CFrame = _hrp.CFrame
+v.CFrame = _hrp.CFrame
 end
 end
 end)
@@ -161,11 +163,15 @@ if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
+elseif v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
 else
@@ -361,11 +367,13 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-while number <= 100 do
+game:GetService("RunService").RenderStepped:Connect(function()
+if number <= 100 then
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
+end)
 end
 end
 end
@@ -391,11 +399,13 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-while number <= 100 do
+game:GetService("RunService").RenderStepped:Connect(function()
+if number <= 100 then
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
+end)
 end
 end
 end
@@ -420,11 +430,13 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-while number <= 100 do
+game:GetService("RunService").RenderStepped:Connect(function()
+if number <= 100 then
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
+end)
 end
 end
 end
@@ -478,9 +490,9 @@ else
 NotifyEntityKillers:Disconnect()
 end
 end})
-local Anti = Tabs.Main:AddLeftGroupbox("Anti")
-Anti:AddToggle("AJDT",{
-Text = "Anti-John Doe Trail",
+local Disabled = Tabs.Main:AddLeftGroupbox("Removal & Misc")
+Disabled:AddToggle("DJDT",{
+Text = "Disabled John Doe Trail",
 Default = false,
 Callback = function(v)
 if v then
@@ -496,5 +508,25 @@ end
 end)
 else
 AntiJohnDoeTrail:Disconnect()
+end
+end})
+Disabled:AddDivider()
+Disabled:AddToggle("DJDS",{
+Text = "John Doe Spike Cant Collide",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Spike" then
+v.CanCollide = false
+end
+end
+AntiJohnDoeSpike = workspace.DescendantAdded:Connect(function(v)
+if v.Name == "Spike" then
+v.CanCollide = false
+end
+end)
+else
+AntiJohnDoeSpike:Disconnect()
 end
 end})
