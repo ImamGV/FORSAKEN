@@ -134,6 +134,17 @@ else
 AutoEatPizza:Disconnect()
 end
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.Godmode then
+game.Players.LocalPlayer.Character.CollisionHitbox.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0,5,0)
+end
+end)
+KillerSurvival:AddToggle("Invis",{
+Text = "Invisible",
+Callback = function(v)
+_G.Godmode = v
+end})
+
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
@@ -497,36 +508,70 @@ Default = false,
 Callback = function(v)
 if v then
 for _,v in ipairs(workspace.Players:GetDescendants()) do
-if v.Name == "JohnDoeTrail" then
-v:Destroy()
+if v.Name == "Trail" then
+v.CanTouch = false
 end
 end
 AntiJohnDoeTrail = workspace.DescendantAdded:Connect(function(v)
-if v.Name == "JohnDoeTrail" then
-v:Destroy()
+if v.Name == "Trail" then
+v.CanTouch = false
 end
 end)
 else
 AntiJohnDoeTrail:Disconnect()
+for _,v in ipairs(workspace.Players:GetDescendants()) do
+if v.Name == "Trail" then
+v.CanTouch = true
+end
+end
 end
 end})
-Disabled:AddDivider()
-Disabled:AddToggle("DJDS",{
-Text = "John Doe Spike Cant Collide",
+Disabled:AddToggle("AJDSp",{
+Text = "Anti John Doe Spike",
 Default = false,
 Callback = function(v)
 if v then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v.Name == "Spike" then
-v.CanCollide = false
+v.Wedge.CanTouch = false
 end
 end
 AntiJohnDoeSpike = workspace.DescendantAdded:Connect(function(v)
 if v.Name == "Spike" then
-v.CanCollide = false
+v.Wedge.CanTouch = false
 end
 end)
 else
 AntiJohnDoeSpike:Disconnect()
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == "Spike" then
+v.Wedge.CanTouch = true
+end
+end
 end
 end})
+Disabled:AddToggle("AJDS",{
+Text = "Anti John Doe Stomp",
+Default = false,
+Callback = function(v)
+if v then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == game.Players.LocalPlayer.Name .. "Shadows" then
+v.Shadow.CanTouch = false
+end
+end
+AntiJohnDoeStomp = workspace.DescendantAdded:Connect(function(v)
+if v.Name == game.Players.LocalPlayer.Name .. "Shadows" then
+v.Shadow.CanTouch = false
+end
+end)
+else
+AntiJohnDoeStomp:Disconnect()
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v.Name == game.Players.LocalPlayer.Name .. "Shadows" then
+v.Shadow.CanTouch = true
+end
+end
+end
+end})
+
