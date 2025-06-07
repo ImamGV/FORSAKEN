@@ -1,1 +1,13 @@
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+local Window = Rayfield:CreateWindow({
+		Name = "Forsaken (Rework)",
+		LoadingTitle = "Forsaken (Rework)",
+		Theme = 'Default',
+		Icon = 0,
+		LoadingSubtitle = "By rechedmcvn",
+		ConfigurationSaving = {
+		Enabled = true,
+		FolderName = "Save_Folder",
+		FileName = "Save_Setting"
+    }
+})
