@@ -16,3 +16,91 @@ Main = Window:CreateTab("Main"),
 Visual = Window:CreateTab("Visual"),
 Players = Window:CreateTab("Players")
 }
+--// No Stun \\
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.StunSpeed
+end
+end)
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.StunSpeed
+end
+end)
+end)
+--// Infinite Stamina \\
+local functiom InfinityStamina(v)
+Work = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
+if not Work then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
+end
+--// Speed Boost \\
+while _G.SpeedBoost do
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += game.Players.LocalPlayer.Character.Humanoid.MoveDirection * _G.SpeedBoostValue
+game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+task.wait()
+end
+--// Auto Generator \\
+local function AutoGenerator(v)
+local AutoGenerator = v
+task.spawn(function()
+while AutoGenerator do
+for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
+if v.Name == "Remotes" and v.Parent.Name == "Generator" then
+v.RE:FireServer()
+end
+end
+task.wait(_G.GeneratorSolutionDelay or 1.5)
+end
+end)
+end
+--// Auto Eat Pizza \\
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.AutoEatPizza then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v:IsA("BasePart") and v.Name == "Pizza" then
+if game.Players.LocalPlayer.Character.Humanoid.Health < 100 then
+if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
+v.CFrame = _hrp.CFrame
+end
+end
+end
+end
+end
+end)
+--// Fullbright, No Global Shadows & Disabled Fog \\
+game:GetService("RunService").RenderStepped:Connect(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = _env.NoFog and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = _env.NoFog and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = _env.NoFog and 0 or fog:GetAttribute("Density")
+end
+if _G.Fullbright then
+game.Lighting.OutdoorAmbient = Color3.new(1,1,1)
+game.Lighting.Brightness = _G.Brightness or 0
+game.Lighting.GlobalShadows = not _G.GlobalShadows
+else
+game.Lighting.OutdoorAmbient = Color3.fromRGB(55,55,55)
+game.Lighting.Brightness = 0
+game.Lighting.GlobalShadows = true
+end
+end)
+--// Field Of View \\
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.FOV then
+workspace.Camera.FieldOfView = _G.FOVValue
+end
+end)
