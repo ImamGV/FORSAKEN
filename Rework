@@ -19,13 +19,13 @@ Players = Window:CreateTab("Players")
 --// No Stun \\
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.StunSpeed
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 18
 end
 end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function()
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
 if _G.NoStun == true and game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 10 then
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.StunSpeed
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 18
 end
 end)
 end)
@@ -68,9 +68,9 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if _G.AutoEatPizza then
 for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
 if v:IsA("BasePart") and v.Name == "Pizza" then
-if game.Players.LocalPlayer.Character.Humanoid.Health < 100 then
+if game.Players.LocalPlayer.Character.Humanoid.Health < _G.HealthEatPizza then
 if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.CFrame = _hrp.CFrame
+v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end
 end
 end
@@ -165,6 +165,21 @@ CurrentValue = false,
 Callback = function(v)
 AutoGenerator(v)
 end})
+Tabs.Main:CreateSection("Pizza")
+Tabs.Main:CreateSlider({
+Name = "Health Eat Pizza",
+Range = {1,99},
+Increment = 1,
+CurrentValue = 75,
+Callback = function(v)
+_G.HealthEatPizza = v
+end})
+Tabs.Main:CreateToggle({
+Name = "Auto Eat Pizza",
+CurrentValue = false,
+Callback = function(v)
+_G.AutoEatPizza = v
+end})
 --// Players Tab \\
 Tabs.Main:CreateSection("LocalPlayer")
 Tabs.Main:CreateSlider({
@@ -179,5 +194,20 @@ Tabs.Main:CreateToggle({
 Name = "Speed Boost",
 CurrentValue = false,
 Callback = function(v)
+_G.SpeedBoost = v
+end})
+Tabs.Main:CreateToggle({
+Name = "Infinity Stamina",
+CurrentValue = false,
+Callback = function(v)
+InfinityStamina(v)
+end})
+Tabs.Main:CreateToggle({
+Name = "No Stun Walker",
+CurrentValue = false,
+Callback = function(v)
+_G.NoStun = v
+end})
+
 _G.SpeedBoost = v
 end})
