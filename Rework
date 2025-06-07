@@ -104,3 +104,47 @@ if _G.FOV then
 workspace.Camera.FieldOfView = _G.FOVValue
 end
 end)
+--// Hide Bar \\
+local function HideBar(v)
+HidePlayerBar = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if HidePlayerBar then
+game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = false
+game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.PlayerIcon.Image = "rbxassetid://12549056837"
+else
+game.Players.LocalPlayer.PlayerGui.TemporaryUI.PlayerInfo.CurrentSurvivors.Visible = true
+end
+end)
+end
+--// Chance Shoot Aimbot \\
+local function AimShootChance(v)
+local AimShootChance = v
+if v then
+local ChanceAimbotSounds = {
+    "rbxassetid://201858045",
+    "rbxassetid://139012439429121"
+}
+AimbotShootChance = game.Players.LocalPlayer.Character.HumanoidRootPart.ChildAdded:Connect(function(child)
+if not AimShootChance then return end
+for _, v in ipairs(ChanceAimbotSounds) do
+if child.Name == v then
+local TargetKiller = game.Workspace.Players:FindFirstChild("Killers"):FindFirstChildOfClass("Model")
+if TargetKiller and TargetKiller:FindFirstChild("HumanoidRootPart") then
+if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local Direction = (Targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
+local number = 1
+while number <= 100 do
+task.wait(0.01)
+number = number + 1
+game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(TargetKiller.HumanoidRootPart.Position.X, TargetKiller.HumanoidRootPart.Position.Y, TargetKiller.HumanoidRootPart.Position.Z))
+end
+end)
+end
+end
+end
+end
+end)
+else
+AimShootChance:Disconnect()
+end
+end
