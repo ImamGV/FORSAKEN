@@ -148,3 +148,36 @@ else
 AimShootChance:Disconnect()
 end
 end
+--[[ SCRIPT ]]
+--// Main Tab \\
+Tabs.Main:CreateSection("Generator")
+Tabs.Main:CreateSlider({
+Name = "Delay Prize",
+Range = {1.3,3},
+Increment = 0.1,
+CurrentValue = 1.5,
+Callback = function(v)
+_G.GeneratorSolutionDelay = v
+end})
+Tabs.Main:CreateToggle({
+Name = "Auto Generator",
+CurrentValue = false,
+Callback = function(v)
+AutoGenerator(v)
+end})
+--// Players Tab \\
+Tabs.Main:CreateSection("LocalPlayer")
+Tabs.Main:CreateSlider({
+Name = "Speed Boost",
+Range = {0,3},
+Increment = 0.1,
+CurrentValue = 1.5,
+Callback = function(v)
+_G.SpeedBoostValue = v
+end})
+Tabs.Main:CreateToggle({
+Name = "Speed Boost",
+CurrentValue = false,
+Callback = function(v)
+_G.SpeedBoost = v
+end})
