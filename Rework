@@ -3,7 +3,7 @@ local Window = Rayfield:CreateWindow({
 		Name = "Forsaken (Rework)",
 		LoadingTitle = "Forsaken (Rework)",
 		Theme = 'Default',
-		Icon = 0,
+		Icon = 95073582077930,
 		LoadingSubtitle = "By rechedmcvn",
 		ConfigurationSaving = {
 		Enabled = true,
@@ -11,3 +11,8 @@ local Window = Rayfield:CreateWindow({
 		FileName = "Save_Setting"
     }
 })
+local Tabs = {
+Main = Window:CreateTab("Main"),
+Visual = Window:CreateTab("Visual"),
+Players = Window:CreateTab("Players")
+}
