@@ -64,29 +64,27 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CanCollide = true
 task.wait()
 end
 end})
-local function staminadrainono(state)
-        stam = state
-        local stamscript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
-        
-        local connection
-        connection = game:GetService("RunService").Heartbeat:Connect(function()
-            if not stam then
-                connection:Disconnect()
-                stamscript.StaminaLossDisabled = nil
-                return
-            end
-            stamscript.StaminaLossDisabled = function() 
-            end
-        end)
-    end
+local functiom InfinityStamina(v)
+Work = v
+local StaminaScript = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+InfStamina = game:GetService("RunService").Heartbeat:Connect(function()
+if not Work then
+InfStamina:Disconnect()
+StaminaScript.StaminaLossDisabled = nil
+return
+end
+StaminaScript.StaminaLossDisabled = function() 
+end
+end)
+end
 KillerSurvival:AddToggle("ISta",{
 Text = "Inf Stamina",
 Callback = function(v)
-staminadrainono(v)
+InfinityStamina(v)
 end})
 KillerSurvival:AddDivider()
-function AutoPrizeGenerator(value)
-local runscript = value
+local function AutoPrizeGenerator(v)
+local runscript = v
 task.spawn(function()
 while runscript do
 for _,v in ipairs(workspace.Map.Ingame.Map:GetDescendants()) do
@@ -112,40 +110,32 @@ Callback = function(v)
 AutoPrizeGenerator(v)
 end})
 KillerSurvival:AddDivider()
+KillerSurvival:AddSlider("HEP",{
+Text = "Health Eat Pizza",
+Min = 1.25, Max = 5,
+Default = 1.5, Compact = true,
+Rounding = 1,
+Callback = function(v)
+_env.HealthEatPizza = v
+end})
 KillerSurvival:AddToggle("AEP",{
 Text = "Auto Eat Pizza",
 Callback = function(v)
-if v then
-for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
-if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
-if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.CFrame = _hrp.CFrame
-end
-end
-end
-AutoEatPizza = workspace.Map.Ingame.DescendantAdded:Connect(function(v)
-if v:IsA("BasePart") and v.Parent.Name == "Pizza" then
-if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
-v.CFrame = _hrp.CFrame
-end
-end
-end)
-else
-AutoEatPizza:Disconnect()
-end
-end})
+_G.AutoEatPizza = v
 game:GetService("RunService").RenderStepped:Connect(function()
-if _G.Godmode then
-game.Players.LocalPlayer.Character.CollisionHitbox.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Vector3.new(0,5,0)
-game.Players.LocalPlayer.Character.CollisionHitbox.CanCollide = false
+if _G.AutoEatPizza then
+for _,v in ipairs(workspace.Map.Ingame:GetDescendants()) do
+if v:IsA("BasePart") and v.Name == "Pizza" then
+if game.Players.LocalPlayer.Character.Humanoid.Health < _G.HealthEatPizza then
+if workspace:FindFirstChild("Map"):FindFirstChild("Ingame"):FindFirstChild(v) then
+v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end
+end
+end
+end
 end
 end)
-KillerSurvival:AddToggle("Invis",{
-Text = "Godmode",
-Callback = function(v)
-_G.Godmode = v
 end})
-
 local Visual = Tabs.Main:AddRightGroupbox("Visual")
 local LibESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/ImamGV/Script/main/ESP"))()
 
@@ -175,14 +165,14 @@ if v then
 for _, v in ipairs(workspace.Players:GetDescendants()) do
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-elseif v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end
 KillersESP = workspace.Players.DescendantAdded:Connect(function(v)
 if v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killers_ESP") then
 LibESP:AddESP(v, "", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
-elseif v:IsA("Model") and v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
+elseif v.Parent.Name == "Killers" and not v:FindFirstChild("Killer_ESP") then
 LibESP:AddESP(v.HumanoidRootPart, "Killer", Color3.fromRGB(255, 0, 0), 14, "Killers_ESP")
 end
 end)
@@ -363,7 +353,7 @@ end
 end)
 end})
 local Aimbot = MainTabbox:AddTab("Aimbot")
-function AimShootChance(value)
+local function AimShootChance(value)
 local aimshootchance = value
 if value then
 local chanceaimbotsounds = {
@@ -379,13 +369,11 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-game:GetService("RunService").RenderStepped:Connect(function()
-if number <= 100 then
+while number <= 100 do
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
-end)
 end
 end
 end
@@ -395,7 +383,7 @@ else
 aimshootchance:Disconnect()
 end
 end
-function AimSlashShedletsky(value)
+local function AimSlashShedletsky(value)
 local aimslashsword = value
 if value then
 local shedaimbotsounds = {
@@ -411,13 +399,11 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-game:GetService("RunService").RenderStepped:Connect(function()
-if number <= 100 then
+while number <= 100 do
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
-end)
 end
 end
 end
@@ -427,7 +413,7 @@ else
 aimslash:Disconnect()
 end
 end
-function AimAttackGuest(value)
+local function AimAttackGuest(value)
 local aimattackguest = value
 if value then
 local guestaimbotsounds = {
@@ -442,13 +428,11 @@ if targetkiller and targetkiller:FindFirstChild("HumanoidRootPart") then
 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local direction = (targetkiller.HumanoidRootPart.Position - game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position).Unit
 local number = 1
-game:GetService("RunService").RenderStepped:Connect(function()
-if number <= 100 then
+while number <= 100 do
 task.wait(0.01)
 number = number + 1
 game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position, Vector3.new(targetkiller.HumanoidRootPart.Position.X, targetkiller.HumanoidRootPart.Position.Y, targetkiller.HumanoidRootPart.Position.Z))
 end
-end)
 end
 end
 end
